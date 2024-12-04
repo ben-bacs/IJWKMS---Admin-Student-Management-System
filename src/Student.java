@@ -94,7 +94,7 @@ public class Student extends Person {
         }
 
         System.out.println("\n=== Academic Standing ===");
-        if (gwa >= 3.0) {
+        if (gwa >= 0.0) {
             System.out.println("Status: Good Standing");
         } else {
             System.out.println("Status: At Risk (Consider Academic Advising)");

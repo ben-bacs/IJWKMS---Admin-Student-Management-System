@@ -192,7 +192,7 @@ public class Main {
             do {
                 grade = safeInputDouble(scanner, "Enter grade for " + course.getCourseName() + " (0.0-5.0): ");
                 if (grade < 0 || grade > 5.0) {
-                    System.out.println("Invalid grade. Please enter a value between 0 and 100.");
+                    System.out.println("Invalid grade. Please enter a value between 0 and 5.0.");
                 }
             } while (grade < 0 || grade > 5.0);
 

@@ -1,25 +1,28 @@
 
-import java.util.*;
+import java.util.LinkedList;
 
 public class Program {
 
     private String programName;
-    private List<Specialization> specializations;
+    private LinkedList<Specialization> specializations;
 
     public Program(String programName) {
         this.programName = programName;
-        this.specializations = new ArrayList<>();
+        this.specializations = new LinkedList<>();
     }
 
+    // Add a specialization to the program
     public void addSpecialization(Specialization specialization) {
         specializations.add(specialization);
     }
 
+    // Get the program's name
     public String getProgramName() {
         return programName;
     }
 
-    public List<Specialization> getSpecializations() {
+    // Get the list of specializations in the program
+    public LinkedList<Specialization> getSpecializations() {
         return specializations;
     }
 }

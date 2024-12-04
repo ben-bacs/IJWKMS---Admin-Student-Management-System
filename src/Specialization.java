@@ -1,25 +1,28 @@
 
-import java.util.*;
+import java.util.LinkedList;
 
 public class Specialization {
 
     private String specializationName;
-    private List<Course> courses;
+    private LinkedList<Course> courses;
 
     public Specialization(String specializationName) {
         this.specializationName = specializationName;
-        this.courses = new ArrayList<>();
+        this.courses = new LinkedList<>();
     }
 
+    // Add a course to the specialization
     public void addCourse(Course course) {
         courses.add(course);
     }
 
+    // Get the specialization's name
     public String getSpecializationName() {
         return specializationName;
     }
 
-    public List<Course> getCourses() {
+    // Get the list of courses in the specialization
+    public LinkedList<Course> getCourses() {
         return courses;
     }
 }
