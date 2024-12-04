@@ -59,12 +59,28 @@ public class Main {
             switch (adminChoice) {
                 case 1 ->
                     addStudent(scanner);
-                case 2 ->
-                    adminControl.viewAllStudents();
+                case 2 -> {
+                    System.out.println("\nView All Students:");
+                    System.out.println("1. Original Order");
+                    System.out.println("2. Sorted by Name");
+                    int viewChoice = safeInputInt(scanner, "Enter your choice: ");
+
+                    switch (viewChoice) {
+                        case 1 ->
+                            adminControl.viewAllStudents(); // Original order
+                        case 2 -> {
+                            adminControl.mergeSortByName();
+                            adminControl.viewAllStudents(); // Display after sorting
+                        }
+                        default ->
+                            System.out.println("Invalid choice. Returning to Admin Menu.");
+                    }
+                }
                 case 3 ->
                     updateStudentGrades(scanner);
                 case 4 -> {
                     adminControl.sortStudentsByGWA();
+                    adminControl.viewAllStudents();   // Display sorted list
                     System.out.println("Sorting completed successfully!");
                 }
                 case 5 -> {
@@ -192,7 +208,7 @@ public class Main {
             do {
                 grade = safeInputDouble(scanner, "Enter grade for " + course.getCourseName() + " (0.0-5.0): ");
                 if (grade < 0 || grade > 5.0) {
-                    System.out.println("Invalid grade. Please enter a value between 0 and 5.0.");
+                    System.out.println("Invalid grade. Please enter a value between 0 and 100.");
                 }
             } while (grade < 0 || grade > 5.0);
 
