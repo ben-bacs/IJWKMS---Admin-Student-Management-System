@@ -91,7 +91,6 @@ public class Main {
     public static void studentMenu(Scanner scanner) {
         System.out.print("Enter your Student ID: ");
         String studentID = scanner.nextLine().trim();
-        scanner.nextLine();
 
         System.out.print("Enter your Password: ");
         String password = scanner.nextLine().trim();
