@@ -38,7 +38,8 @@ public class AdminControl {
             return;
         }
 
-        studentList = (LinkedList<Student>) mergeSortByName(studentList);
+        // Explicitly create a LinkedList from the result of mergeSortByName
+        studentList = new LinkedList<>(mergeSortByName(studentList));
 
         System.out.println("Students sorted by Name:");
         for (Student student : studentList) {
@@ -87,7 +88,8 @@ public class AdminControl {
             return;
         }
 
-        studentList = (LinkedList<Student>) mergeSort(studentList);
+        // Explicitly create a LinkedList from the result of mergeSort
+        studentList = new LinkedList<>(mergeSort(studentList));
 
         System.out.println("Students sorted by GWA:");
         for (Student student : studentList) {

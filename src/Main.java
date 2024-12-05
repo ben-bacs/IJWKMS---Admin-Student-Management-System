@@ -80,7 +80,6 @@ public class Main {
                     updateStudentGrades(scanner);
                 case 4 -> {
                     adminControl.sortStudentsByGWA();
-                    adminControl.viewAllStudents();   // Display sorted list
                     System.out.println("Sorting completed successfully!");
                 }
                 case 5 -> {
