@@ -69,7 +69,8 @@ public class Main {
                         case 1 ->
                             adminControl.viewAllStudents(); // Original order
                         case 2 -> {
-                            adminControl.mergeSortByName();
+                            adminControl.sortStudents(Comparator.comparing(Student::getName)); // Sort by name
+
                             adminControl.viewAllStudents(); // Display after sorting
                         }
                         default ->
@@ -79,7 +80,9 @@ public class Main {
                 case 3 ->
                     updateStudentGrades(scanner);
                 case 4 -> {
-                    adminControl.sortStudentsByGWA();
+                    adminControl.sortStudents(Comparator.comparingDouble(Student::getGWA));
+                    adminControl.viewAllStudents();
+
                     System.out.println("Sorting completed successfully!");
                 }
                 case 5 -> {

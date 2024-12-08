@@ -32,110 +32,6 @@ public class AdminControl {
         }
     }
 
-    public void mergeSortByName() {
-        if (studentList.isEmpty()) {
-            System.out.println("No students available to sort.");
-            return;
-        }
-
-        // Explicitly create a LinkedList from the result of mergeSortByName
-        studentList = new LinkedList<>(mergeSortByName(studentList));
-
-        System.out.println("Students sorted by Name:");
-        for (Student student : studentList) {
-            System.out.printf("%s - GWA: %.2f%n", student.getName(), student.getGWA());
-        }
-    }
-
-    private List<Student> mergeSortByName(List<Student> list) {
-        if (list.size() <= 1) {
-            return list;
-        }
-
-        int mid = list.size() / 2;
-        List<Student> left = mergeSortByName(new ArrayList<>(list.subList(0, mid)));
-        List<Student> right = mergeSortByName(new ArrayList<>(list.subList(mid, list.size())));
-
-        return mergeByName(left, right);
-    }
-
-    private List<Student> mergeByName(List<Student> left, List<Student> right) {
-        List<Student> merged = new ArrayList<>();
-        int i = 0, j = 0;
-
-        while (i < left.size() && j < right.size()) {
-            if (left.get(i).getName().compareTo(right.get(j).getName()) <= 0) {
-                merged.add(left.get(i++));
-            } else {
-                merged.add(right.get(j++));
-            }
-        }
-
-        while (i < left.size()) {
-            merged.add(left.get(i++));
-        }
-
-        while (j < right.size()) {
-            merged.add(right.get(j++));
-        }
-
-        return merged;
-    }
-
-    public void mergeSortByGWA() {
-        if (studentList.isEmpty()) {
-            System.out.println("No students available to sort.");
-            return;
-        }
-
-        // Explicitly create a LinkedList from the result of mergeSort
-        studentList = new LinkedList<>(mergeSort(studentList));
-
-        System.out.println("Students sorted by GWA:");
-        for (Student student : studentList) {
-            System.out.printf("%s - GWA: %.2f%n", student.getName(), student.getGWA());
-        }
-    }
-
-    private List<Student> mergeSort(List<Student> list) {
-        if (list.size() <= 1) {
-            return list;
-        }
-
-        int mid = list.size() / 2;
-        List<Student> left = mergeSort(new ArrayList<>(list.subList(0, mid)));
-        List<Student> right = mergeSort(new ArrayList<>(list.subList(mid, list.size())));
-
-        return merge(left, right);
-    }
-
-    private List<Student> merge(List<Student> left, List<Student> right) {
-        List<Student> merged = new ArrayList<>();
-        int i = 0, j = 0;
-
-        while (i < left.size() && j < right.size()) {
-            if (left.get(i).getGWA() <= right.get(j).getGWA()) {
-                merged.add(left.get(i++));
-            } else {
-                merged.add(right.get(j++));
-            }
-        }
-
-        while (i < left.size()) {
-            merged.add(left.get(i++));
-        }
-
-        while (j < right.size()) {
-            merged.add(right.get(j++));
-        }
-
-        return merged;
-    }
-
-    public void sortStudentsByGWA() {
-        mergeSortByGWA(); // Call the actual Merge Sort implementation
-    }
-
     public void generateStudentReport(String studentID) {
         Student student = findStudentByID(studentID);
 
@@ -187,6 +83,19 @@ public class AdminControl {
 
         student.setProfile(profile);
         System.out.println("Profile added/updated successfully for " + student.getName());
+    }
+
+    public void sortStudents(Comparator<Student> comparator) {
+        if (studentList.isEmpty()) {
+            System.out.println("No students available to sort.");
+            return;
+        }
+
+        studentList = new LinkedList<>(studentList.stream()
+                .sorted(comparator)
+                .toList());
+
+        System.out.println("Students sorted successfully!");
     }
 
 }
