@@ -60,7 +60,8 @@ public class Student extends Person {
             }
         }
 
-        this.gwa = totalUnits > 0 ? totalGradePoints / totalUnits : 0.0;
+        this.setGWA(totalUnits > 0 ? totalGradePoints / totalUnits : 0.0);
+
     }
 
     public void viewGrades() {
@@ -100,6 +101,13 @@ public class Student extends Person {
             System.out.println("Status: At Risk (Consider Academic Advising)");
         }
         System.out.printf("Current GWA: %.2f%n", gwa);
+    }
+
+    public void setGWA(double gwa) {
+        if (gwa < 0.0 || gwa > 5.0) {
+            throw new IllegalArgumentException("GWA must be between 0.0 and 5.0.");
+        }
+        this.gwa = gwa;
     }
 
 }
