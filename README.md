@@ -1,5 +1,7 @@
 ## Latest Changes
 
+### Delete function
+able to delete students by their **ID**
 ### Attribute
 attribute **name** change to 2 speperate attribute **firstName**, and **lastName**
 ### Comparator
