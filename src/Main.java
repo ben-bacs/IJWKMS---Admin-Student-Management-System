@@ -53,7 +53,8 @@ public class Main {
             System.out.println("4. Sort Students by GWA");
             System.out.println("5. Generate Student Report");
             System.out.println("6. Add/Update Student Profile");
-            System.out.println("7. Back to Main Menu");
+            System.out.println("7. Delete Student");
+            System.out.println("8. Back to Main Menu");
             adminChoice = safeInputInt(scanner, "Enter your choice: ");
 
             switch (adminChoice) {
@@ -87,10 +88,12 @@ public class Main {
                     System.out.println("Sorting completed successfully!");
                 }
                 case 5 -> {
+                    adminControl.viewAllStudents();
                     String studentID = safeInputString(scanner, "Enter Student ID to generate report: ");
                     adminControl.generateStudentReport(studentID);
                 }
                 case 6 -> {
+                    adminControl.viewAllStudents();
                     String studentID = safeInputString(scanner, "Enter Student ID to add/update profile: ");
                     String address = safeInputString(scanner, "Enter Address: ");
                     String contactNumber = safeInputString(scanner, "Enter Contact Number: ");
@@ -99,12 +102,18 @@ public class Main {
                     Profile profile = new Profile(address, contactNumber, emergencyContact);
                     adminControl.addOrUpdateProfile(studentID, profile);
                 }
-                case 7 ->
+                case 7 -> {
+                    adminControl.viewAllStudents();
+                    String studentID = safeInputString(scanner, "Enter Student ID to delete: ");
+                    adminControl.deleteStudent(studentID);
+                }
+
+                case 8 ->
                     System.out.println("Returning to Main Menu...");
                 default ->
                     System.out.println("Invalid choice. Please try again.");
             }
-        } while (adminChoice != 7);
+        } while (adminChoice != 8);
     }
 
     public static void studentMenu(Scanner scanner) {

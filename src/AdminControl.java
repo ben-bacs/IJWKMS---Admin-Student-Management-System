@@ -1,6 +1,15 @@
 
 import java.util.*;
 
+/**
+ * Data Structures Used: 1. LinkedList<Student> studentList: - Chosen for
+ * efficient insertion and removal of student records. - Allows easy iteration
+ * over student data for sorting and searching.
+ *
+ * 2. TreeMap<String, Double> courseGrades: - Chosen to map course codes to
+ * grades with automatic key ordering. - Provides quick access and maintains
+ * sorted order of course grades for students.
+ */
 public class AdminControl {
 
     private LinkedList<Student> studentList;
@@ -110,6 +119,18 @@ public class AdminControl {
                 .toList());
 
         System.out.println("Students sorted by GWA successfully!");
+    }
+
+    public void deleteStudent(String studentID) {
+        Student studentToDelete = findStudentByID(studentID);
+
+        if (studentToDelete == null) {
+            System.out.println("Student not found!");
+            return;
+        }
+
+        studentList.remove(studentToDelete);
+        System.out.println("Student with ID " + studentID + " deleted successfully!");
     }
 
 }
