@@ -9,8 +9,8 @@ public class Student extends Person {
     private TreeMap<String, Double> courseGrades;
     private double gwa; // Holds the computed GWA
 
-    public Student(String id, String password, String name) {
-        super(id, name);
+    public Student(String id, String password, String firstName, String lastName) {
+        super(id, firstName, lastName);
         this.password = password;
         this.profile = null; // Initialize as null until set
         this.enrolledCourses = new ArrayList<>();
@@ -22,7 +22,8 @@ public class Student extends Person {
     @Override
     public void displayDetails() {
         System.out.println("Student ID: " + getId());
-        System.out.println("Name: " + getName());
+        System.out.println("First Name: " + getFirstName());
+        System.out.println("Last Name: " + getLastName());
         System.out.printf("GWA: %.2f%n", gwa);
         if (profile != null) {
             System.out.println("Profile:");

@@ -28,7 +28,7 @@ public class AdminControl {
             return;
         }
         for (Student student : studentList) {
-            System.out.printf("ID: %s, Name: %s, GWA: %.2f%n", student.getId(), student.getName(), student.getGWA());
+            System.out.printf("ID: %s, Name: %s, GWA: %.2f%n", student.getId(), student.getLastName() + ", " + student.getFirstName(), student.getGWA());
         }
     }
 
@@ -42,7 +42,8 @@ public class AdminControl {
 
         System.out.println("\n=== Student Report ===");
         System.out.printf("ID: %s%n", student.getId());
-        System.out.printf("Name: %s%n", student.getName());
+        System.out.printf("First Name: %s%n", student.getFirstName());
+        System.out.printf("Last Name: %s%n", student.getLastName());
 
         // Include Profile Information
         Profile profile = student.getProfile();
@@ -82,20 +83,33 @@ public class AdminControl {
         }
 
         student.setProfile(profile);
-        System.out.println("Profile added/updated successfully for " + student.getName());
+        System.out.println("Profile added/updated successfully for " + student.getLastName() + ", " + student.getFirstName());
     }
 
-    public void sortStudents(Comparator<Student> comparator) {
+    public void sortStudentsByName() {
         if (studentList.isEmpty()) {
             System.out.println("No students available to sort.");
             return;
         }
 
         studentList = new LinkedList<>(studentList.stream()
-                .sorted(comparator)
+                .sorted(Comparator.comparing(Student::getLastName).thenComparing(Student::getFirstName))
                 .toList());
 
-        System.out.println("Students sorted successfully!");
+        System.out.println("Students sorted by last name, then first name successfully!");
+    }
+
+    public void sortStudentsByGWA() {
+        if (studentList.isEmpty()) {
+            System.out.println("No students available to sort.");
+            return;
+        }
+
+        studentList = new LinkedList<>(studentList.stream()
+                .sorted(Comparator.comparingDouble(Student::getGWA))
+                .toList());
+
+        System.out.println("Students sorted by GWA successfully!");
     }
 
 }

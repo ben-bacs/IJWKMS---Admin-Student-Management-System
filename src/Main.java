@@ -69,10 +69,11 @@ public class Main {
                         case 1 ->
                             adminControl.viewAllStudents(); // Original order
                         case 2 -> {
-                            adminControl.sortStudents(Comparator.comparing(Student::getName)); // Sort by name
-
-                            adminControl.viewAllStudents(); // Display after sorting
+                            System.out.println("\nView All Students (Sorted by Name):");
+                            adminControl.sortStudentsByName(); // Sort by last name, then first name
+                            adminControl.viewAllStudents();    // Display sorted students
                         }
+
                         default ->
                             System.out.println("Invalid choice. Returning to Admin Menu.");
                     }
@@ -80,7 +81,7 @@ public class Main {
                 case 3 ->
                     updateStudentGrades(scanner);
                 case 4 -> {
-                    adminControl.sortStudents(Comparator.comparingDouble(Student::getGWA));
+                    adminControl.sortStudentsByGWA();
                     adminControl.viewAllStudents();
 
                     System.out.println("Sorting completed successfully!");
@@ -146,7 +147,8 @@ public class Main {
     public static void addStudent(Scanner scanner) {
         String id = safeInputString(scanner, "Enter Student ID: ");
         String password = safeInputString(scanner, "Enter Password: ");
-        String name = safeInputString(scanner, "Enter Name: ");
+        String firstName = safeInputString(scanner, "Enter First Name: ");
+        String lastName = safeInputString(scanner, "Enter Last Name: ");
 
         System.out.println("Available Departments:");
         for (int i = 0; i < departments.size(); i++) {
@@ -184,7 +186,7 @@ public class Main {
         }
 
         Specialization selectedSpecialization = selectedProgram.getSpecializations().get(specializationChoice);
-        Student student = new Student(id, password, name);
+        Student student = new Student(id, password, firstName, lastName);
 
         System.out.println("\nEnrolling in the following courses:");
         for (Course course : selectedSpecialization.getCourses()) {
@@ -229,8 +231,6 @@ public class Main {
         Course citCourse3 = new Course("IT103", "Software Engineering", 4);
         Course citCourse4 = new Course("IT104", "Data Structures", 4);
         Course citCourse5 = new Course("IT105", "Network Fundamentals", 3);
-        Course citGeneral1 = new Course("ITG01", "Programming Fundamentals", 3);
-        Course citGeneral2 = new Course("ITG02", "Computer Organization", 3);
 
         Specialization citSpec1 = new Specialization("Software Development");
         citSpec1.addCourse(citCourse1);
@@ -258,8 +258,6 @@ public class Main {
         Course cbmCourse3 = new Course("BM103", "Digital Marketing", 3);
         Course cbmCourse4 = new Course("BM104", "Financial Accounting", 4);
         Course cbmCourse5 = new Course("BM105", "Cost Accounting", 3);
-        Course cbmGeneral1 = new Course("BMG01", "Business Ethics", 3);
-        Course cbmGeneral2 = new Course("BMG02", "Statistics", 3);
 
         Specialization cbmSpec1 = new Specialization("Marketing");
         cbmSpec1.addCourse(cbmCourse1);
@@ -286,8 +284,6 @@ public class Main {
         Course coeCourse3 = new Course("ENG103", "Embedded Systems", 4);
         Course coeCourse4 = new Course("ENG104", "Thermodynamics", 3);
         Course coeCourse5 = new Course("ENG105", "Machine Design", 4);
-        Course coeGeneral1 = new Course("ENGG01", "Physics", 3);
-        Course coeGeneral2 = new Course("ENGG02", "Engineering Mathematics", 3);
 
         Specialization coeSpec1 = new Specialization("Electronics Engineering");
         coeSpec1.addCourse(coeCourse1);

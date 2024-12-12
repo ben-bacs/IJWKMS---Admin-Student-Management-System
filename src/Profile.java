@@ -35,4 +35,5 @@ public class Profile {
     public void setEmergencyContact(String emergencyContact) {
         this.emergencyContact = emergencyContact;
     }
+
 }

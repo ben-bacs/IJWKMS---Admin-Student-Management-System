@@ -3,8 +3,8 @@ public class Admin extends Person {
 
     private String department;
 
-    public Admin(String id, String name, String department) {
-        super(id, name);
+    public Admin(String id, String firstName, String lastName, String department) {
+        super(id, firstName, lastName);
         this.department = department;
     }
 
@@ -19,7 +19,9 @@ public class Admin extends Person {
     @Override
     public void displayDetails() {
         System.out.println("Admin ID: " + getId());
-        System.out.println("Name: " + getName());
+        System.out.println("First Name: " + getFirstName());
+        System.out.println("Last Name: " + getLastName());
         System.out.println("Department: " + department);
     }
+
 }

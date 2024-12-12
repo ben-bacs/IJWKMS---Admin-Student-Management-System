@@ -25,4 +25,5 @@ public class Department {
     public LinkedList<Program> getPrograms() {
         return programs;
     }
+
 }
