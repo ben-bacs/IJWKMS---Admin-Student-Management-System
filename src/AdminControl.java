@@ -13,13 +13,25 @@ import java.util.*;
 public class AdminControl {
 
     private LinkedList<Student> studentList;
+    private Set<String> existingIDs;        // Tracks existing IDs
 
     public AdminControl() {
         this.studentList = new LinkedList<>();
+        this.existingIDs = new HashSet<>();
     }
 
     public void addStudent(Student student) {
-        studentList.add(student); // Efficient addition with LinkedList
+        // Check if a student with the same ID already exists
+        for (Student s : studentList) {
+            if (s.getId().equals(student.getId())) {
+                System.out.println("Error: A student with ID " + student.getId() + " already exists.");
+                return; // Exit the method if the ID already exists
+            }
+        }
+
+        // If no duplicates found, add the student
+        studentList.add(student);
+        System.out.println("Student added successfully.");
     }
 
     public Student findStudentByID(String studentID) {
@@ -123,14 +135,14 @@ public class AdminControl {
 
     public void deleteStudent(String studentID) {
         Student studentToDelete = findStudentByID(studentID);
-
         if (studentToDelete == null) {
-            System.out.println("Student not found!");
+            System.out.println("Error: No student found with ID " + studentID);
             return;
         }
 
-        studentList.remove(studentToDelete);
-        System.out.println("Student with ID " + studentID + " deleted successfully!");
+        studentList.remove(studentToDelete); // Remove from the list
+        existingIDs.remove(studentID);       // Remove the ID from the Set
+        System.out.println("Student with ID " + studentID + " deleted successfully.");
     }
 
 }
