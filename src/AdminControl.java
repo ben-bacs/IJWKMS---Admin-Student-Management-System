@@ -17,7 +17,6 @@ public class AdminControl {
 
     public AdminControl() {
         this.studentList = new LinkedList<>();
-        this.existingIDs = new HashSet<>();
     }
 
     public void addStudent(Student student) {
@@ -141,7 +140,6 @@ public class AdminControl {
         }
 
         studentList.remove(studentToDelete); // Remove from the list
-        existingIDs.remove(studentID);       // Remove the ID from the Set
         System.out.println("Student with ID " + studentID + " deleted successfully.");
     }
 
