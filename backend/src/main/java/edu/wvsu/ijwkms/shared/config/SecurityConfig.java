@@ -19,16 +19,22 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 public class SecurityConfig {
 
     @Bean
+    CookieCsrfTokenRepository csrfTokenRepository(IdentitySecurityProperties properties) {
+        CookieCsrfTokenRepository csrfRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
+        csrfRepository.setHeaderName("X-XSRF-TOKEN");
+        csrfRepository.setCookieCustomizer(
+                cookie -> cookie.path("/").sameSite("Strict").secure(properties.isSecureCookie()));
+        return csrfRepository;
+    }
+
+    @Bean
     SecurityFilterChain securityFilterChain(
             HttpSecurity http,
             SessionAuthenticationFilter sessionAuthenticationFilter,
             ApiAuthenticationEntryPoint authenticationEntryPoint,
             ApiAccessDeniedHandler accessDeniedHandler,
-            IdentitySecurityProperties properties)
+            CookieCsrfTokenRepository csrfRepository)
             throws Exception {
-        CookieCsrfTokenRepository csrfRepository = CookieCsrfTokenRepository.withHttpOnlyFalse();
-        csrfRepository.setCookieCustomizer(
-                cookie -> cookie.path("/").sameSite("Strict").secure(properties.isSecureCookie()));
         CsrfTokenRequestAttributeHandler csrfRequestHandler = new CsrfTokenRequestAttributeHandler();
         csrfRequestHandler.setCsrfRequestAttributeName(null);
 

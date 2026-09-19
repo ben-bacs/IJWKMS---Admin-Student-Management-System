@@ -9,6 +9,7 @@ import java.time.Instant;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,18 +24,22 @@ public class AuthController {
     private final IdentityService identityService;
     private final SessionCookieService sessionCookieService;
     private final IdentitySecurityProperties properties;
+    private final CookieCsrfTokenRepository csrfTokenRepository;
 
     public AuthController(
             IdentityService identityService,
             SessionCookieService sessionCookieService,
-            IdentitySecurityProperties properties) {
+            IdentitySecurityProperties properties,
+            CookieCsrfTokenRepository csrfTokenRepository) {
         this.identityService = identityService;
         this.sessionCookieService = sessionCookieService;
         this.properties = properties;
+        this.csrfTokenRepository = csrfTokenRepository;
     }
 
     @GetMapping("/csrf")
-    CsrfResponse csrf(CsrfToken csrfToken) {
+    CsrfResponse csrf(CsrfToken csrfToken, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+        csrfTokenRepository.saveToken(csrfToken, httpRequest, httpResponse);
         return new CsrfResponse(csrfToken.getHeaderName(), csrfToken.getParameterName(), csrfToken.getToken());
     }
 

@@ -53,7 +53,7 @@ public class IdentityService {
         this.dummyPasswordHash = passwordEncoder.encode(tokenCodec.newToken());
     }
 
-    @Transactional
+    @Transactional(noRollbackFor = ApiException.class)
     public LoginResult login(String username, String password, String clientIp, String userAgent) {
         Instant now = Instant.now(clock);
         String normalizedUsername = normalizeUsername(username);
