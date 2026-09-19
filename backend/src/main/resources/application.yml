@@ -48,3 +48,16 @@ info:
 logging:
   pattern:
     level: "%5p [correlationId:%X{correlationId:-none}]"
+
+app:
+  security:
+    session-ttl: ${SESSION_TTL:8h}
+    password-reset-ttl: ${PASSWORD_RESET_TTL:30m}
+    login-window: ${LOGIN_RATE_LIMIT_WINDOW:15m}
+    max-login-attempts: ${LOGIN_RATE_LIMIT_ATTEMPTS:5}
+    bcrypt-strength: ${BCRYPT_STRENGTH:12}
+    session-cookie-name: ${SESSION_COOKIE_NAME:IJWKMS_SESSION}
+    secure-cookie: ${SESSION_COOKIE_SECURE:false}
+    bootstrap-username: ${BOOTSTRAP_ADMIN_USERNAME:}
+    bootstrap-password: ${BOOTSTRAP_ADMIN_PASSWORD:}
+    bootstrap-display-name: ${BOOTSTRAP_ADMIN_DISPLAY_NAME:System Administrator}

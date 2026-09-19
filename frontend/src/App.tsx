@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 import { AppShell } from './app/AppShell'
 import { AuthProvider } from './auth/AuthContext'
+import { RequireAuth } from './auth/RequireAuth'
 import { AdministrationPage } from './pages/AdministrationPage'
 import { LandingPage } from './pages/LandingPage'
 import { SignInPage } from './pages/SignInPage'
@@ -14,8 +15,11 @@ function App() {
         <Route element={<AppShell />}>
           <Route index element={<LandingPage />} />
           <Route path="login" element={<SignInPage />} />
-          <Route path="student" element={<StudentPortalPage />} />
-          <Route path="admin" element={<AdministrationPage />} />
+          <Route path="student" element={<RequireAuth><StudentPortalPage /></RequireAuth>} />
+          <Route
+            path="admin"
+            element={<RequireAuth permission="identity.users.read"><AdministrationPage /></RequireAuth>}
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>

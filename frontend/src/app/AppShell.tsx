@@ -1,6 +1,9 @@
 import { NavLink, Outlet } from 'react-router-dom'
+import { useAuth } from '../auth/AuthContext'
 
 export function AppShell() {
+  const auth = useAuth()
+
   return (
     <div className="app-shell">
       <header className="site-header">
@@ -10,9 +13,17 @@ export function AppShell() {
         </NavLink>
         <nav className="site-nav" aria-label="Primary navigation">
           <NavLink to="/" end>Overview</NavLink>
-          <NavLink to="/student">Student</NavLink>
-          <NavLink to="/admin">Administration</NavLink>
-          <NavLink to="/login">Sign in</NavLink>
+          {auth.status === 'authenticated' && <NavLink to="/student">Student</NavLink>}
+          {auth.status === 'authenticated' && auth.hasPermission('identity.users.read') && (
+            <NavLink to="/admin">Administration</NavLink>
+          )}
+          {auth.status === 'authenticated' ? (
+            <button className="nav-button" type="button" onClick={() => void auth.logout()}>
+              Sign out
+            </button>
+          ) : (
+            <NavLink to="/login">Sign in</NavLink>
+          )}
         </nav>
       </header>
 
@@ -21,7 +32,9 @@ export function AppShell() {
       </main>
 
       <footer className="site-footer">
-        <span>IJWKMS Next · Modernization in progress</span>
+        <span>
+          {auth.status === 'authenticated' ? `Signed in as ${auth.user.displayName}` : 'IJWKMS Next · Modernization in progress'}
+        </span>
         <span>Secure by design · API first</span>
       </footer>
     </div>

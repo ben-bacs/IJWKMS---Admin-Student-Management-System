@@ -8,6 +8,7 @@ import org.slf4j.MDC;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -16,6 +17,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
+    @ExceptionHandler(ApiException.class)
+    ResponseEntity<ApiErrorResponse> handleApiException(ApiException exception) {
+        return error(exception.status(), exception.code(), exception.getMessage(), List.of());
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiErrorResponse> handleInvalidArguments(MethodArgumentNotValidException exception) {
@@ -40,6 +46,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(HttpMessageNotReadableException.class)
     ResponseEntity<ApiErrorResponse> handleUnreadableMessage() {
         return error(HttpStatus.BAD_REQUEST, "MALFORMED_REQUEST", "Request body is malformed.", List.of());
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    ResponseEntity<ApiErrorResponse> handleAccessDenied() {
+        return error(HttpStatus.FORBIDDEN, "FORBIDDEN", "You do not have access to this resource.", List.of());
     }
 
     @ExceptionHandler(Exception.class)
