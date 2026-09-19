@@ -4,7 +4,7 @@ IJWKMS Next is a ground-up modernization of the original Java console-based stud
 
 ## Current milestone
 
-Phase 3 adds persistent academic organization and versioned curriculum management to the secure delivery foundation:
+Phase 4 adds persistent, privacy-aware student records to the secure academic foundation:
 
 - Java 25 and Spring Boot 4 modular-monolith backend
 - PostgreSQL 17 with versioned Flyway migrations
@@ -18,8 +18,11 @@ Phase 3 adds persistent academic organization and versioned curriculum managemen
 - Configurable institutions, colleges, departments, programs, specializations, and course catalog
 - Versioned curricula with immutable activated requirements and cycle-safe prerequisites
 - Configurable academic years and terms with validated dates and explicit lifecycle states
+- Searchable student records with unique student-number and identity linkage constraints
+- Privacy-separated contact and emergency profiles with student self-service access
+- Historical program and curriculum assignments with non-destructive status transitions
 
-Remaining student, enrollment, grading, advising, portal, and reporting capabilities are staged in the [development issues](https://github.com/ben-bacs/IJWKMS---Admin-Student-Management-System/issues). The legacy implementation remains under `src/` and the immutable baseline is tagged `legacy-v1.0`.
+Remaining enrollment, grading, advising, portal, and reporting capabilities are staged in the [development issues](https://github.com/ben-bacs/IJWKMS---Admin-Student-Management-System/issues). The legacy implementation remains under `src/` and the immutable baseline is tagged `legacy-v1.0`.
 
 ## Quick start with Docker
 
@@ -85,7 +88,7 @@ src/         Preserved legacy Java console application
 compose.yaml Local PostgreSQL, backend, and frontend stack
 ```
 
-Start with the [documentation index](docs/README.md), [academic configuration model](docs/academic-configuration.md), [legacy architecture](docs/legacy/architecture.md), [risk register](docs/legacy/risk-register.md), and [development standards](docs/development/standards.md).
+Start with the [documentation index](docs/README.md), [academic configuration model](docs/academic-configuration.md), [student records model](docs/student-records.md), [legacy architecture](docs/legacy/architecture.md), [risk register](docs/legacy/risk-register.md), and [development standards](docs/development/standards.md).
 
 ## Security posture
 

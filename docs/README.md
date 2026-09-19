@@ -10,6 +10,7 @@ This directory records the decisions and evidence used to replatform the origina
 - [Development standards](development/standards.md)
 - [Identity security model](security/identity.md)
 - [Academic configuration model](academic-configuration.md)
+- [Student records and privacy model](student-records.md)
 - [Architecture decision records](adr/README.md)
 
 The immutable historical baseline is the annotated Git tag `legacy-v1.0`, which points to commit `254831e37389a465bc32c88ded413143ff162916`.

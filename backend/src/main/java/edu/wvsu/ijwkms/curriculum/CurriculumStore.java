@@ -475,6 +475,35 @@ class CurriculumStore {
                 .list();
     }
 
+    boolean isValidStudentAssignment(UUID programId, UUID curriculumVersionId, UUID specializationId) {
+        return jdbc.sql("""
+                        SELECT EXISTS(
+                            SELECT 1
+                            FROM academic_program program
+                            JOIN curriculum ON curriculum.program_id = program.id
+                            JOIN curriculum_version version ON version.curriculum_id = curriculum.id
+                            WHERE program.id = :programId
+                              AND version.id = :curriculumVersionId
+                              AND program.status = 'ACTIVE'
+                              AND version.status = 'ACTIVE'
+                              AND (
+                                  CAST(:specializationId AS uuid) IS NULL
+                                  OR EXISTS(
+                                      SELECT 1 FROM specialization
+                                      WHERE specialization.id = :specializationId
+                                        AND specialization.program_id = program.id
+                                        AND specialization.status = 'ACTIVE'
+                                  )
+                              )
+                        )
+                        """)
+                .param("programId", programId)
+                .param("curriculumVersionId", curriculumVersionId)
+                .param("specializationId", specializationId)
+                .query(Boolean.class)
+                .single();
+    }
+
     private ProgramView mapProgram(ResultSet result, int rowNumber) throws SQLException {
         return new ProgramView(
                 result.getObject("id", UUID.class),

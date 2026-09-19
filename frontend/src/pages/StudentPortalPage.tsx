@@ -14,7 +14,7 @@ export function StudentPortalPage() {
         </p>
       </header>
       <div className="notice">
-        Your session is active. Student-scoped academic records arrive in the next domain phases.
+        Your session is active. Student records and private profile APIs are now scoped to your linked identity.
       </div>
     </div>
   )
