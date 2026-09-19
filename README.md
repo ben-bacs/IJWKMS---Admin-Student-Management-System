@@ -4,7 +4,7 @@ IJWKMS Next is a ground-up modernization of the original Java console-based stud
 
 ## Current milestone
 
-Phase 6 adds authorized grading, immutable final-grade revisions, and deterministic GWA to the secure academic foundation:
+Phase 7 adds explainable academic standing and auditable student-success workflows to the secure academic foundation:
 
 - Java 25 and Spring Boot 4 modular-monolith backend
 - PostgreSQL 17 with versioned Flyway migrations
@@ -27,8 +27,10 @@ Phase 6 adds authorized grading, immutable final-grade revisions, and determinis
 - Effective-dated grade policies with explicit not-graded, draft, final, incomplete, and withdrawn states
 - Faculty-scoped grade submission with protected final grades and immutable revision history
 - Policy-aware term and cumulative GWA weighted deterministically by course units
+- Versioned deterministic standing policies with persisted inputs and rule explanations
+- Adviser assignments, privacy-scoped notes, alert lifecycles, and audited standing overrides
 
-Remaining advising, portal, and reporting capabilities are staged in the [development issues](https://github.com/ben-bacs/IJWKMS---Admin-Student-Management-System/issues). The legacy implementation remains under `src/` and the immutable baseline is tagged `legacy-v1.0`.
+Remaining portal and reporting capabilities are staged in the [development issues](https://github.com/ben-bacs/IJWKMS---Admin-Student-Management-System/issues). The legacy implementation remains under `src/` and the immutable baseline is tagged `legacy-v1.0`.
 
 ## Quick start with Docker
 

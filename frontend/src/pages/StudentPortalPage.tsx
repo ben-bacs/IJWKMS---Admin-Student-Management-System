@@ -14,7 +14,7 @@ export function StudentPortalPage() {
         </p>
       </header>
       <div className="notice">
-        Your session is active. Your linked record can now access authorized enrollment, grade history, and GWA workflows.
+        Your session is active. Your linked record can now access authorized enrollment, grades, GWA, standing, and advising workflows.
       </div>
     </div>
   )
