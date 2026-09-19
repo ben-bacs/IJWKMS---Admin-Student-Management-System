@@ -18,7 +18,11 @@ function App() {
           <Route path="student" element={<RequireAuth><StudentPortalPage /></RequireAuth>} />
           <Route
             path="admin"
-            element={<RequireAuth permission="identity.users.read"><AdministrationPage /></RequireAuth>}
+            element={(
+              <RequireAuth anyPermissions={['identity.users.read', 'academics.manage', 'curriculum.manage']}>
+                <AdministrationPage />
+              </RequireAuth>
+            )}
           />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

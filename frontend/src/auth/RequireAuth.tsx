@@ -2,9 +2,12 @@ import type { PropsWithChildren } from 'react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuth } from './AuthContext'
 
-type RequireAuthProps = PropsWithChildren<{ permission?: string }>
+type RequireAuthProps = PropsWithChildren<{
+  permission?: string
+  anyPermissions?: string[]
+}>
 
-export function RequireAuth({ children, permission }: RequireAuthProps) {
+export function RequireAuth({ children, permission, anyPermissions }: RequireAuthProps) {
   const auth = useAuth()
   const location = useLocation()
 
@@ -14,7 +17,11 @@ export function RequireAuth({ children, permission }: RequireAuthProps) {
   if (auth.status === 'anonymous') {
     return <Navigate to="/login" state={{ from: location.pathname }} replace />
   }
-  if (permission && !auth.hasPermission(permission)) {
+  const hasRequiredPermission =
+    (!permission || auth.hasPermission(permission)) &&
+    (!anyPermissions || anyPermissions.some((candidate) => auth.hasPermission(candidate)))
+
+  if (!hasRequiredPermission) {
     return (
       <div className="page">
         <header className="page-header">

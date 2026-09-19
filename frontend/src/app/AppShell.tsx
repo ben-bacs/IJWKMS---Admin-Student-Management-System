@@ -3,6 +3,11 @@ import { useAuth } from '../auth/AuthContext'
 
 export function AppShell() {
   const auth = useAuth()
+  const canAccessAdministration = [
+    'identity.users.read',
+    'academics.manage',
+    'curriculum.manage',
+  ].some((permission) => auth.hasPermission(permission))
 
   return (
     <div className="app-shell">
@@ -14,7 +19,7 @@ export function AppShell() {
         <nav className="site-nav" aria-label="Primary navigation">
           <NavLink to="/" end>Overview</NavLink>
           {auth.status === 'authenticated' && <NavLink to="/student">Student</NavLink>}
-          {auth.status === 'authenticated' && auth.hasPermission('identity.users.read') && (
+          {auth.status === 'authenticated' && canAccessAdministration && (
             <NavLink to="/admin">Administration</NavLink>
           )}
           {auth.status === 'authenticated' ? (
