@@ -288,6 +288,18 @@ class StudentService implements StudentDirectory {
         return store.isActiveStudent(studentId);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isLinkedToUser(UUID studentId, UUID userId) {
+        return store.isLinkedToUser(studentId, userId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean curriculumIncludesCourse(UUID studentId, UUID courseId) {
+        return store.curriculumIncludesCourse(studentId, courseId);
+    }
+
     private StudentView requireStudent(UUID id) {
         return store.findStudent(id)
                 .orElseThrow(() ->

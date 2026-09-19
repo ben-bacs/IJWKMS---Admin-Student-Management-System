@@ -37,7 +37,7 @@ export function LandingPage() {
           <ul className="status-list">
             <li><span className="status-dot" /><span><strong>Modular backend</strong>Bounded domains on Spring Boot</span></li>
             <li><span className="status-dot" /><span><strong>Secure identity</strong>Revocable sessions and scoped permissions</span></li>
-            <li><span className="status-dot" /><span><strong>Private student records</strong>Scoped profiles and assignment history</span></li>
+            <li><span className="status-dot" /><span><strong>Enrollment integrity</strong>Capacity-safe offerings and lifecycle history</span></li>
           </ul>
         </aside>
       </section>

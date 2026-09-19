@@ -32,7 +32,7 @@ class FoundationMigrationIT {
                         .executeQuery(
                                 "SELECT metadata_value FROM app_metadata WHERE metadata_key = 'schema_version'")) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getString(1)).isEqualTo("students");
+            assertThat(result.getString(1)).isEqualTo("enrollment");
         }
 
         try (Connection connection = dataSource.getConnection();
@@ -51,11 +51,13 @@ class FoundationMigrationIT {
                               'course', 'course_prerequisite', 'curriculum',
                               'curriculum_version', 'curriculum_requirement',
                               'academic_year', 'academic_term',
-                              'student', 'student_profile', 'student_program'
+                              'student', 'student_profile', 'student_program',
+                              'course_offering', 'course_offering_schedule',
+                              'course_offering_instructor', 'enrollment', 'enrollment_event'
                           )
                         """)) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getInt(1)).isEqualTo(13);
+            assertThat(result.getInt(1)).isEqualTo(18);
         }
 
         try (Connection connection = dataSource.getConnection();
@@ -65,11 +67,13 @@ class FoundationMigrationIT {
                             'academics.read', 'academics.manage',
                             'curriculum.read', 'curriculum.manage',
                             'student.read', 'student.write',
-                            'student.profile.read', 'student.profile.write'
+                            'student.profile.read', 'student.profile.write',
+                            'course.offering.read', 'course.offering.manage',
+                            'enrollment.read', 'enrollment.create', 'enrollment.drop'
                         )
                         """)) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getInt(1)).isEqualTo(8);
+            assertThat(result.getInt(1)).isEqualTo(13);
         }
     }
 }
