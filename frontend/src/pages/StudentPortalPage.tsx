@@ -14,7 +14,7 @@ export function StudentPortalPage() {
         </p>
       </header>
       <div className="notice">
-        Your session is active. Student records and private profile APIs are now scoped to your linked identity.
+        Your session is active. Your linked record can now access authorized offerings and enrollment workflows.
       </div>
     </div>
   )

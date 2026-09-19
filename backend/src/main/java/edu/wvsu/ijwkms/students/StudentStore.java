@@ -311,6 +311,36 @@ class StudentStore {
                 .single();
     }
 
+    boolean isLinkedToUser(UUID studentId, UUID userId) {
+        return jdbc.sql("SELECT EXISTS(SELECT 1 FROM student WHERE id = :studentId AND user_id = :userId)")
+                .param("studentId", studentId)
+                .param("userId", userId)
+                .query(Boolean.class)
+                .single();
+    }
+
+    boolean curriculumIncludesCourse(UUID studentId, UUID courseId) {
+        return jdbc.sql("""
+                        SELECT EXISTS(
+                            SELECT 1
+                            FROM student_program assignment
+                            JOIN curriculum_requirement requirement
+                              ON requirement.curriculum_version_id = assignment.curriculum_version_id
+                            WHERE assignment.student_id = :studentId
+                              AND assignment.status = 'ACTIVE'
+                              AND requirement.course_id = :courseId
+                              AND (
+                                  requirement.specialization_id IS NULL
+                                  OR requirement.specialization_id = assignment.specialization_id
+                              )
+                        )
+                        """)
+                .param("studentId", studentId)
+                .param("courseId", courseId)
+                .query(Boolean.class)
+                .single();
+    }
+
     private StudentView mapStudent(ResultSet result, int rowNumber) throws SQLException {
         return new StudentView(
                 result.getObject("id", UUID.class),

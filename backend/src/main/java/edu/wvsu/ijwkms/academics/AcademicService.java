@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-class AcademicService implements CourseDirectory {
+class AcademicService implements CourseDirectory, AcademicCalendarDirectory {
 
     private final AcademicStore store;
     private final AuditService auditService;
@@ -96,6 +96,24 @@ class AcademicService implements CourseDirectory {
     @Transactional(readOnly = true)
     public boolean courseExists(UUID courseId) {
         return store.findCourse(courseId).isPresent();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean courseIsActive(UUID courseId) {
+        return store.courseIsActive(courseId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean termExists(UUID termId) {
+        return store.findTerm(termId).isPresent();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean termAcceptsEnrollment(UUID termId) {
+        return store.termAcceptsEnrollment(termId);
     }
 
     @Transactional

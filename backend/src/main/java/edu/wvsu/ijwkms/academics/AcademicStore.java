@@ -35,6 +35,13 @@ class AcademicStore {
                         """).param("id", id).query(this::mapCourse).optional();
     }
 
+    boolean courseIsActive(UUID id) {
+        return jdbc.sql("SELECT EXISTS(SELECT 1 FROM course WHERE id = :id AND status = 'ACTIVE')")
+                .param("id", id)
+                .query(Boolean.class)
+                .single();
+    }
+
     void createCourse(CourseView course) {
         jdbc.sql("""
                         INSERT INTO course (id, code, name, description, units, status, version)
@@ -212,6 +219,18 @@ class AcademicStore {
                                grade_submission_deadline, status, version
                         FROM academic_term WHERE id = :id
                         """).param("id", id).query(this::mapTerm).optional();
+    }
+
+    boolean termAcceptsEnrollment(UUID id) {
+        return jdbc.sql("""
+                        SELECT EXISTS(
+                            SELECT 1 FROM academic_term
+                            WHERE id = :id
+                              AND status = 'ENROLLMENT_OPEN'
+                              AND (enrollment_open_at IS NULL OR enrollment_open_at <= CURRENT_TIMESTAMP)
+                              AND (enrollment_close_at IS NULL OR enrollment_close_at >= CURRENT_TIMESTAMP)
+                        )
+                        """).param("id", id).query(Boolean.class).single();
     }
 
     void createTerm(AcademicTermView term) {
