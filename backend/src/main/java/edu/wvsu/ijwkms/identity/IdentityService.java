@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class IdentityService {
+public class IdentityService implements IdentityDirectory {
 
     private static final String SYSTEM_ADMIN = "SYSTEM_ADMIN";
 
@@ -276,6 +276,12 @@ public class IdentityService {
     @Transactional(readOnly = true)
     public UserView userView(UUID userId) {
         return toView(requireUser(userId));
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean userHasRole(UUID userId, String roleCode) {
+        return store.findUserById(userId).isPresent() && store.findRoles(userId).contains(roleCode);
     }
 
     @Transactional(readOnly = true)

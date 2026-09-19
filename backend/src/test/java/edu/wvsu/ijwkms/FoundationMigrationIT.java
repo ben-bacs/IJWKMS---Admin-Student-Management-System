@@ -32,7 +32,7 @@ class FoundationMigrationIT {
                         .executeQuery(
                                 "SELECT metadata_value FROM app_metadata WHERE metadata_key = 'schema_version'")) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getString(1)).isEqualTo("academics");
+            assertThat(result.getString(1)).isEqualTo("students");
         }
 
         try (Connection connection = dataSource.getConnection();
@@ -50,11 +50,12 @@ class FoundationMigrationIT {
                               'organization_unit', 'academic_program', 'specialization',
                               'course', 'course_prerequisite', 'curriculum',
                               'curriculum_version', 'curriculum_requirement',
-                              'academic_year', 'academic_term'
+                              'academic_year', 'academic_term',
+                              'student', 'student_profile', 'student_program'
                           )
                         """)) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getInt(1)).isEqualTo(10);
+            assertThat(result.getInt(1)).isEqualTo(13);
         }
 
         try (Connection connection = dataSource.getConnection();
@@ -62,11 +63,13 @@ class FoundationMigrationIT {
                         SELECT COUNT(*) FROM app_permission
                         WHERE code IN (
                             'academics.read', 'academics.manage',
-                            'curriculum.read', 'curriculum.manage'
+                            'curriculum.read', 'curriculum.manage',
+                            'student.read', 'student.write',
+                            'student.profile.read', 'student.profile.write'
                         )
                         """)) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getInt(1)).isEqualTo(4);
+            assertThat(result.getInt(1)).isEqualTo(8);
         }
     }
 }

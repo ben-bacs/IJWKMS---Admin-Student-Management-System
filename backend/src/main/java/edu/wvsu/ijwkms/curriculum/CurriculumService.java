@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-class CurriculumService {
+class CurriculumService implements CurriculumDirectory {
 
     private final CurriculumStore store;
     private final OrganizationDirectory organizationDirectory;
@@ -411,6 +411,12 @@ class CurriculumService {
             throw new ApiException(HttpStatus.NOT_FOUND, "COURSE_NOT_FOUND", "The course was not found.");
         }
         return store.listPrerequisites(courseId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isValidStudentAssignment(UUID programId, UUID curriculumVersionId, UUID specializationId) {
+        return store.isValidStudentAssignment(programId, curriculumVersionId, specializationId);
     }
 
     private ProgramView requireProgram(UUID id) {
