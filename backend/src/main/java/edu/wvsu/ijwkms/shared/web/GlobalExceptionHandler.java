@@ -5,6 +5,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -51,6 +52,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     ResponseEntity<ApiErrorResponse> handleAccessDenied() {
         return error(HttpStatus.FORBIDDEN, "FORBIDDEN", "You do not have access to this resource.", List.of());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    ResponseEntity<ApiErrorResponse> handleDataIntegrityViolation() {
+        return error(
+                HttpStatus.CONFLICT,
+                "DATA_INTEGRITY_CONFLICT",
+                "The requested change conflicts with an existing or referenced record.",
+                List.of());
     }
 
     @ExceptionHandler(Exception.class)
