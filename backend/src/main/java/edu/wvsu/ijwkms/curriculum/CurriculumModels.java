@@ -58,6 +58,7 @@ record CurriculumRequirementView(
         UUID id,
         UUID curriculumVersionId,
         UUID courseId,
+        String courseCode,
         UUID specializationId,
         RequirementType requirementType,
         Integer recommendedYear,

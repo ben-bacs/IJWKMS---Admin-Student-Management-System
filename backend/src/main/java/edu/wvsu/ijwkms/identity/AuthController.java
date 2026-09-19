@@ -6,6 +6,8 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import java.time.Instant;
+import java.util.List;
+import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -70,6 +72,18 @@ public class AuthController {
     @GetMapping("/me")
     UserView me(Authentication authentication) {
         return identityService.userView(principal(authentication).userId());
+    }
+
+    @GetMapping("/sessions")
+    List<SessionView> sessions(Authentication authentication, HttpServletRequest request) {
+        return identityService.listSessions(principal(authentication).userId(), sessionCookieService.read(request));
+    }
+
+    @PostMapping("/sessions/{sessionId}/revoke")
+    ResponseEntity<Void> revokeSession(
+            Authentication authentication, @org.springframework.web.bind.annotation.PathVariable UUID sessionId) {
+        identityService.revokeSession(principal(authentication).userId(), sessionId);
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/password/change")

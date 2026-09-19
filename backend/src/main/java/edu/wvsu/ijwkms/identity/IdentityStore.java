@@ -224,6 +224,38 @@ class IdentityStore {
                         """).param("now", atUtc(now)).param("userId", userId).update();
     }
 
+    List<SessionView> listSessions(UUID userId, String currentTokenHash, Instant now) {
+        return jdbc.sql("""
+                        SELECT id, user_agent, created_at, last_seen_at, expires_at,
+                               token_hash = :currentTokenHash AS current_session
+                        FROM user_session
+                        WHERE user_id = :userId AND revoked_at IS NULL AND expires_at > :now
+                        ORDER BY current_session DESC, last_seen_at DESC
+                        """)
+                .param("currentTokenHash", currentTokenHash)
+                .param("userId", userId)
+                .param("now", atUtc(now))
+                .query((result, rowNumber) -> new SessionView(
+                        result.getObject("id", UUID.class),
+                        result.getString("user_agent"),
+                        result.getTimestamp("created_at").toInstant(),
+                        result.getTimestamp("last_seen_at").toInstant(),
+                        result.getTimestamp("expires_at").toInstant(),
+                        result.getBoolean("current_session")))
+                .list();
+    }
+
+    int revokeOwnedSession(UUID userId, UUID sessionId, Instant now) {
+        return jdbc.sql("""
+                        UPDATE user_session SET revoked_at = :now
+                        WHERE id = :sessionId AND user_id = :userId AND revoked_at IS NULL
+                        """)
+                .param("now", atUtc(now))
+                .param("sessionId", sessionId)
+                .param("userId", userId)
+                .update();
+    }
+
     long countRecentFailures(String principalHash, String clientIpHash, Instant since) {
         return jdbc.sql("""
                         SELECT COUNT(*)

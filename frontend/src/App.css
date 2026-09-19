@@ -228,6 +228,43 @@
   background: #fbefe5;
 }
 
+.portal-page { width: min(1380px, calc(100% - 2.5rem)); margin: 0 auto; padding: 2.5rem 0 5rem; }
+.portal-hero { display: flex; align-items: end; justify-content: space-between; gap: 2rem; padding: 1.5rem 0 2rem; }
+.portal-hero h1 { margin: 0; color: #163d31; font-family: Georgia, serif; font-size: clamp(2.3rem, 5vw, 4.4rem); font-weight: 500; letter-spacing: -.045em; }
+.portal-hero p:last-child { color: #61756e; }
+.portal-layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); gap: 1.25rem; align-items: start; }
+.portal-nav { position: sticky; top: 5.5rem; display: grid; gap: .2rem; padding: 1rem; border: 1px solid #d7e1dc; border-radius: 1rem; background: rgba(255,255,255,.84); }
+.portal-nav p { margin: .35rem .65rem .7rem; color: #8c5a38; font-size: .72rem; font-weight: 900; letter-spacing: .13em; text-transform: uppercase; }
+.portal-nav a { padding: .67rem .75rem; border-radius: .65rem; color: #536b63; font-size: .87rem; font-weight: 700; }
+.portal-nav a:hover, .portal-nav a[aria-current='page'] { color: #163d31; background: #e8f0eb; }
+.portal-content { min-width: 0; padding: clamp(1.25rem, 3vw, 2rem); border: 1px solid #d7e1dc; border-radius: 1.25rem; background: rgba(255,255,255,.86); box-shadow: 0 20px 55px rgba(35,65,55,.08); }
+.section-title { margin-bottom: 1.5rem; }
+.section-title h2 { margin: 0; color: #183b30; font-family: Georgia, serif; font-size: clamp(2rem, 4vw, 3.4rem); font-weight: 500; }
+.section-title p:last-child { margin: .6rem 0 0; color: #61756e; }
+.metric-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: .8rem; margin-bottom: 1rem; }
+.metric-card { min-width: 10rem; padding: 1.15rem; border: 1px solid #dce5e0; border-radius: 1rem; background: #f8faf7; }
+.metric-card span, .metric-card small { display: block; color: #657972; font-size: .78rem; font-weight: 700; }
+.metric-card strong { display: block; margin: .25rem 0; color: #1c4a3b; font-size: clamp(1.3rem,3vw,2rem); }
+.portal-card, .definition-card, .table-wrap { margin: 1rem 0; border: 1px solid #dce5e0; border-radius: 1rem; background: #fff; overflow: hidden; }
+.portal-card { padding: 1.25rem; }
+.portal-card h3 { margin: 0 0 1rem; color: #21483b; }
+.record-item, .session-row { display: flex; justify-content: space-between; gap: 1rem; padding: .9rem 0; border-top: 1px solid #edf1ee; }
+.record-item:first-of-type, .session-row:first-of-type { border-top: 0; }
+.record-item strong, .record-item span, .session-row strong, .session-row span { display: block; }
+.record-item span, .session-row span { color: #667971; font-size: .88rem; }
+.session-row button { align-self: center; padding: .45rem .7rem; border: 1px solid #b86552; border-radius: .55rem; color: #8b3c2c; background: #fff; cursor: pointer; }
+.definition-card { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); padding: 0; }
+.definition-card div { padding: 1rem 1.2rem; border-bottom: 1px solid #edf1ee; }
+.definition-card dt { color: #6b7d76; font-size: .76rem; font-weight: 800; text-transform: uppercase; }
+.definition-card dd { margin: .35rem 0 0; color: #1e4437; font-weight: 700; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; text-align: left; }
+th { color: #5a6f67; background: #f4f7f4; font-size: .75rem; text-transform: uppercase; }
+th, td { padding: .85rem 1rem; border-bottom: 1px solid #e7ece9; white-space: nowrap; }
+.empty-state { padding: 1rem; color: #6a7d76; text-align: center; }
+.portal-error { margin-bottom: 1rem; padding: .8rem 1rem; border-radius: .7rem; color: #7b2e20; background: #fbeae6; }
+.portal-state { max-width: 42rem; margin: 4rem auto; }
+
 .auth-page {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(18rem, 30rem);
@@ -316,4 +353,13 @@
   .site-footer {
     flex-direction: column;
   }
+
+  .portal-page { width: min(100% - 1rem, 1380px); padding-top: 1rem; }
+  .portal-hero { align-items: stretch; flex-direction: column; }
+  .portal-layout { grid-template-columns: 1fr; }
+  .portal-nav { position: static; display: flex; overflow-x: auto; }
+  .portal-nav p { display: none; }
+  .portal-nav a { flex: 0 0 auto; }
+  .metric-grid, .definition-card { grid-template-columns: 1fr; }
+  .record-item, .session-row { align-items: flex-start; flex-direction: column; }
 }

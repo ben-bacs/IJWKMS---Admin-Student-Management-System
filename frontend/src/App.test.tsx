@@ -64,6 +64,35 @@ describe('App', () => {
     expect(await screen.findByRole('heading', { name: /run academic operations/i })).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /sign out/i })).toBeInTheDocument()
   })
+
+  it('loads the self-scoped student portal and exposes every workflow', async () => {
+    const student = {
+      id: 'student-1', studentNumber: '2026-0001', firstName: 'Ada', lastName: 'Student',
+      status: 'ACTIVE', cohortYear: 2026,
+      programAssignment: { programCode: 'BSCS', curriculumVersionId: 'curriculum-1', curriculumVersionCode: '2026' },
+    }
+    const fetchMock = vi.fn(async (input: RequestInfo | URL) => {
+      const path = String(input)
+      if (path.endsWith('/auth/me')) return apiResponse({ id: 'user-1', username: 'ada', displayName: 'Ada Student', status: 'ACTIVE', roles: ['STUDENT'], permissions: ['grade.read', 'success.read'] })
+      if (path.endsWith('/students/me')) return apiResponse(student)
+      if (path.endsWith('/profile')) return apiResponse({ contactNumber: '09•••••••••' })
+      if (path.includes('/enrollments/students/')) return apiResponse({ items: [], totalElements: 0 })
+      if (path.includes('/grades?')) return apiResponse({ items: [], totalElements: 0 })
+      if (path.endsWith('/gwa')) return apiResponse({ weightedGwa: null, totalUnits: 0, eligibleGradeCount: 0 })
+      if (path.endsWith('/advising-alerts') || path.endsWith('/advising-notes') || path.endsWith('/auth/sessions')) return apiResponse([])
+      if (path.includes('/curriculum/versions/')) return apiResponse({ items: [], totalElements: 0 })
+      throw new Error(`Unexpected request: ${path}`)
+    })
+    vi.stubGlobal('fetch', fetchMock)
+
+    render(<MemoryRouter initialEntries={['/student/dashboard']}><App /></MemoryRouter>)
+
+    expect(await screen.findByRole('heading', { name: /welcome back, ada/i })).toBeInTheDocument()
+    expect(screen.getByRole('navigation', { name: /student portal/i })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /active sessions/i })).toHaveAttribute('href', '/student/sessions')
+    expect(screen.getByRole('link', { name: /report download/i })).toHaveAttribute('href', '/student/reports')
+    expect(window.localStorage.length).toBe(0)
+  })
 })
 
 function apiResponse(body: unknown, status = 200) {

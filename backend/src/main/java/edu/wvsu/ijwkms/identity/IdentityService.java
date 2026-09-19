@@ -6,6 +6,7 @@ import edu.wvsu.ijwkms.shared.web.ApiException;
 import java.text.Normalizer;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -144,6 +145,21 @@ public class IdentityService implements IdentityDirectory {
                 actorUserId == null ? null : actorUserId.toString(),
                 AuditOutcome.SUCCESS,
                 Map.of());
+    }
+
+    @Transactional(readOnly = true)
+    public List<SessionView> listSessions(UUID userId, String currentRawToken) {
+        String currentHash = currentRawToken == null ? "" : tokenCodec.hash(currentRawToken);
+        return store.listSessions(userId, currentHash, Instant.now(clock));
+    }
+
+    @Transactional
+    public void revokeSession(UUID userId, UUID sessionId) {
+        if (store.revokeOwnedSession(userId, sessionId, Instant.now(clock)) == 0) {
+            throw new ApiException(HttpStatus.NOT_FOUND, "SESSION_NOT_FOUND", "The active session was not found.");
+        }
+        auditService.record(
+                userId, "AUTH_SESSION_REVOKED", "SESSION", sessionId.toString(), AuditOutcome.SUCCESS, Map.of());
     }
 
     @Transactional
