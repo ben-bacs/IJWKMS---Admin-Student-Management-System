@@ -130,18 +130,20 @@ class StudentStore {
 
     List<StudentView> listStudents(
             String query, StudentStatus status, UUID programId, int cohortYear, String orderBy, int limit, int offset) {
-        return jdbc.sql(STUDENT_SELECT + """
-                         WHERE (
-                             :query = ''
-                             OR student.student_number ILIKE :pattern
-                             OR student.first_name ILIKE :pattern
-                             OR student.last_name ILIKE :pattern
-                             OR COALESCE(student.preferred_name, '') ILIKE :pattern
-                         )
-                           AND (CAST(:status AS varchar) IS NULL OR student.status = :status)
-                           AND (CAST(:programId AS uuid) IS NULL OR assignment.program_id = :programId)
-                           AND (:cohortYear = 0 OR student.cohort_year = :cohortYear)
-                         ORDER BY """ + orderBy + " LIMIT :limit OFFSET :offset")
+        return jdbc.sql((STUDENT_SELECT + """
+                        WHERE (
+                            :query = ''
+                            OR student.student_number ILIKE :pattern
+                            OR student.first_name ILIKE :pattern
+                            OR student.last_name ILIKE :pattern
+                            OR COALESCE(student.preferred_name, '') ILIKE :pattern
+                        )
+                          AND (CAST(:status AS varchar) IS NULL OR student.status = :status)
+                          AND (CAST(:programId AS uuid) IS NULL OR assignment.program_id = :programId)
+                          AND (:cohortYear = 0 OR student.cohort_year = :cohortYear)
+                        ORDER BY %s
+                        LIMIT :limit OFFSET :offset
+                        """).formatted(orderBy))
                 .param("query", query)
                 .param("pattern", "%" + query + "%")
                 .param("status", status == null ? null : status.name())
