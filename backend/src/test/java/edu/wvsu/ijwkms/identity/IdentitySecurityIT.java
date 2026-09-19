@@ -29,6 +29,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
+import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.json.JsonMapper;
 
 @SpringBootTest(
@@ -119,6 +120,25 @@ class IdentitySecurityIT {
                                 }
                                 """))
                 .andExpect(status().isForbidden());
+
+        Cookie secondStudentSession = login("scope.student", "Scope-Student-2026");
+        MvcResult sessions = mockMvc.perform(get("/api/v1/auth/sessions").cookie(studentSession))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].current").value(true))
+                .andReturn();
+        JsonNode sessionList = jsonMapper.readTree(sessions.getResponse().getContentAsString());
+        UUID otherSessionId = UUID.fromString(sessionList.findValues("id").stream()
+                .filter(node ->
+                        !node.asString().equals(sessionList.get(0).get("id").asString()))
+                .findFirst()
+                .orElseThrow()
+                .asString());
+        mockMvc.perform(post("/api/v1/auth/sessions/{sessionId}/revoke", otherSessionId)
+                        .cookie(studentSession)
+                        .with(csrf()))
+                .andExpect(status().isNoContent());
+        mockMvc.perform(get("/api/v1/auth/me").cookie(secondStudentSession)).andExpect(status().isUnauthorized());
 
         mockMvc.perform(post("/api/v1/auth/logout").cookie(studentSession).with(csrf()))
                 .andExpect(status().isNoContent())

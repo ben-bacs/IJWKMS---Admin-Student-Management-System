@@ -318,6 +318,7 @@ class CurriculumService implements CurriculumDirectory {
                 UUID.randomUUID(),
                 versionId,
                 courseId,
+                null,
                 specializationId,
                 requirementType,
                 recommendedYear,

@@ -4,7 +4,7 @@ IJWKMS Next is a ground-up modernization of the original Java console-based stud
 
 ## Current milestone
 
-Phase 7 adds explainable academic standing and auditable student-success workflows to the secure academic foundation:
+Phase 8 delivers the responsive, self-scoped student portal on the secure academic foundation:
 
 - Java 25 and Spring Boot 4 modular-monolith backend
 - PostgreSQL 17 with versioned Flyway migrations
@@ -29,8 +29,10 @@ Phase 7 adds explainable academic standing and auditable student-success workflo
 - Policy-aware term and cumulative GWA weighted deterministically by course units
 - Versioned deterministic standing policies with persisted inputs and rule explanations
 - Adviser assignments, privacy-scoped notes, alert lifecycles, and audited standing overrides
+- Responsive dashboard, profile, enrollment, grades, history, curriculum, standing, notifications, privacy, sessions, and report views
+- Self-scoped session review and revocation without persisting academic data in browser storage
 
-Remaining portal and reporting capabilities are staged in the [development issues](https://github.com/ben-bacs/IJWKMS---Admin-Student-Management-System/issues). The legacy implementation remains under `src/` and the immutable baseline is tagged `legacy-v1.0`.
+Remaining administration, reporting, integrations, and hardening capabilities are staged in the [development issues](https://github.com/ben-bacs/IJWKMS---Admin-Student-Management-System/issues). The legacy implementation remains under `src/` and the immutable baseline is tagged `legacy-v1.0`.
 
 ## Quick start with Docker
 

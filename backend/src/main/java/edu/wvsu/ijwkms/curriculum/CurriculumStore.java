@@ -369,10 +369,13 @@ class CurriculumStore {
 
     Optional<CurriculumRequirementView> findRequirement(UUID id) {
         return jdbc.sql("""
-                        SELECT id, curriculum_version_id, course_id, specialization_id,
+                        SELECT requirement.id, requirement.curriculum_version_id, requirement.course_id,
+                               course.code AS course_code, requirement.specialization_id,
                                requirement_type, recommended_year, recommended_term,
                                minimum_grade_rule, display_order
-                        FROM curriculum_requirement WHERE id = :id
+                        FROM curriculum_requirement requirement
+                        JOIN course ON course.id = requirement.course_id
+                        WHERE requirement.id = :id
                         """).param("id", id).query(this::mapRequirement).optional();
     }
 
@@ -384,12 +387,14 @@ class CurriculumStore {
 
     List<CurriculumRequirementView> listRequirements(UUID versionId, int limit, int offset) {
         return jdbc.sql("""
-                        SELECT id, curriculum_version_id, course_id, specialization_id,
+                        SELECT requirement.id, requirement.curriculum_version_id, requirement.course_id,
+                               course.code AS course_code, requirement.specialization_id,
                                requirement_type, recommended_year, recommended_term,
                                minimum_grade_rule, display_order
-                        FROM curriculum_requirement
-                        WHERE curriculum_version_id = :versionId
-                        ORDER BY display_order, id
+                        FROM curriculum_requirement requirement
+                        JOIN course ON course.id = requirement.course_id
+                        WHERE requirement.curriculum_version_id = :versionId
+                        ORDER BY requirement.display_order, requirement.id
                         LIMIT :limit OFFSET :offset
                         """)
                 .param("versionId", versionId)
@@ -554,6 +559,7 @@ class CurriculumStore {
                 result.getObject("id", UUID.class),
                 result.getObject("curriculum_version_id", UUID.class),
                 result.getObject("course_id", UUID.class),
+                result.getString("course_code"),
                 result.getObject("specialization_id", UUID.class),
                 RequirementType.valueOf(result.getString("requirement_type")),
                 recommendedYear,

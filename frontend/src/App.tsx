@@ -15,7 +15,7 @@ function App() {
         <Route element={<AppShell />}>
           <Route index element={<LandingPage />} />
           <Route path="login" element={<SignInPage />} />
-          <Route path="student" element={<RequireAuth><StudentPortalPage /></RequireAuth>} />
+          <Route path="student/*" element={<RequireAuth><StudentPortalPage /></RequireAuth>} />
           <Route
             path="admin"
             element={(
