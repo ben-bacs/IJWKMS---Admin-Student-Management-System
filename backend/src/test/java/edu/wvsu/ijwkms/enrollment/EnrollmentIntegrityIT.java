@@ -193,6 +193,17 @@ class EnrollmentIntegrityIT {
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.error.code").value("DUPLICATE_ENROLLMENT"));
 
+        UUID electiveOffering = createAndOpenOffering(admin, fixture.electiveCourse(), fixture.term(), "A", 10);
+        UUID electiveEnrollment = responseId(mockMvc.perform(post("/api/v1/enrollments")
+                        .cookie(winnerSession)
+                        .with(csrf())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {"studentId":"%s","courseOfferingId":"%s"}
+                                """.formatted(winner.studentId(), electiveOffering)))
+                .andExpect(status().isCreated())
+                .andReturn());
+
         UUID heavyOffering = createAndOpenOffering(admin, fixture.heavyCourse(), fixture.term(), "A", 10);
         mockMvc.perform(post("/api/v1/enrollments")
                         .cookie(winnerSession)
@@ -220,16 +231,6 @@ class EnrollmentIntegrityIT {
                 .andExpect(jsonPath("$[0].newStatus").value("ENROLLED"))
                 .andExpect(jsonPath("$[1].newStatus").value("DROPPED"));
 
-        UUID electiveOffering = createAndOpenOffering(admin, fixture.electiveCourse(), fixture.term(), "A", 10);
-        UUID electiveEnrollment = responseId(mockMvc.perform(post("/api/v1/enrollments")
-                        .cookie(winnerSession)
-                        .with(csrf())
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {"studentId":"%s","courseOfferingId":"%s"}
-                                """.formatted(winner.studentId(), electiveOffering)))
-                .andExpect(status().isCreated())
-                .andReturn());
         setOfferingStatus(admin, electiveOffering, "CLOSED", 1, status().isOk());
         setOfferingStatus(admin, electiveOffering, "CANCELLED", 2, status().isConflict());
         mockMvc.perform(post("/api/v1/enrollments/{id}/withdraw", electiveEnrollment)
@@ -386,8 +387,8 @@ class EnrollmentIntegrityIT {
                         """).param("id", version).param("curriculum", curriculum).update();
 
         UUID basic = insertCourse("P5-BASIC", "Phase 5 Basic", "3.0");
-        UUID advanced = insertCourse("P5-ADV", "Phase 5 Advanced", "3.0");
-        UUID heavy = insertCourse("P5-HEAVY", "Phase 5 Heavy", "23.0");
+        UUID advanced = insertCourse("P5-ADV", "Phase 5 Advanced", "12.0");
+        UUID heavy = insertCourse("P5-HEAVY", "Phase 5 Heavy", "12.0");
         UUID elective = insertCourse("P5-ELECT", "Phase 5 Elective", "3.0");
         for (UUID course : List.of(basic, advanced, heavy, elective)) {
             jdbc.sql("""
