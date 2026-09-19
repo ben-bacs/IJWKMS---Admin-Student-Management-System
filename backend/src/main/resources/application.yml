@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: ijwkms-next-backend
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/ijwkms}
+    username: ${DATABASE_USERNAME:ijwkms}
+    password: ${DATABASE_PASSWORD:ijwkms_local_only}
+  flyway:
+    enabled: true
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  lifecycle:
+    timeout-per-shutdown-phase: 20s
+
+server:
+  shutdown: graceful
+  error:
+    include-message: never
+    include-binding-errors: never
+    include-stacktrace: never
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: never
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+info:
+  app:
+    name: IJWKMS Next
+    description: Academic Operations and Student Success Platform
+    version: 0.1.0-SNAPSHOT
+
+logging:
+  pattern:
+    level: "%5p [correlationId:%X{correlationId:-none}]"
