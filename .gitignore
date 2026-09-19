@@ -61,3 +61,14 @@ local.properties
 
 .idea
 /bin1/
+
+# IJWKMS Next build output and local configuration
+backend/target/
+frontend/node_modules/
+frontend/dist/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
