@@ -4,7 +4,7 @@ IJWKMS Next is a ground-up modernization of the original Java console-based stud
 
 ## Current milestone
 
-Phase 5 adds term-specific course offerings and transactional enrollment to the secure academic foundation:
+Phase 6 adds authorized grading, immutable final-grade revisions, and deterministic GWA to the secure academic foundation:
 
 - Java 25 and Spring Boot 4 modular-monolith backend
 - PostgreSQL 17 with versioned Flyway migrations
@@ -24,8 +24,11 @@ Phase 5 adds term-specific course offerings and transactional enrollment to the 
 - Term offerings with sections, capacity, schedules, instructors, and explicit lifecycle states
 - Transactional enrollment with curriculum, prerequisite, unit-load, duplicate, and availability checks
 - Concurrency-safe capacity enforcement plus append-only enrollment and audit events
+- Effective-dated grade policies with explicit not-graded, draft, final, incomplete, and withdrawn states
+- Faculty-scoped grade submission with protected final grades and immutable revision history
+- Policy-aware term and cumulative GWA weighted deterministically by course units
 
-Remaining grading, advising, portal, and reporting capabilities are staged in the [development issues](https://github.com/ben-bacs/IJWKMS---Admin-Student-Management-System/issues). The legacy implementation remains under `src/` and the immutable baseline is tagged `legacy-v1.0`.
+Remaining advising, portal, and reporting capabilities are staged in the [development issues](https://github.com/ben-bacs/IJWKMS---Admin-Student-Management-System/issues). The legacy implementation remains under `src/` and the immutable baseline is tagged `legacy-v1.0`.
 
 ## Quick start with Docker
 
@@ -91,7 +94,7 @@ src/         Preserved legacy Java console application
 compose.yaml Local PostgreSQL, backend, and frontend stack
 ```
 
-Start with the [documentation index](docs/README.md), [academic configuration model](docs/academic-configuration.md), [student records model](docs/student-records.md), [enrollment integrity model](docs/enrollment-integrity.md), [legacy architecture](docs/legacy/architecture.md), [risk register](docs/legacy/risk-register.md), and [development standards](docs/development/standards.md).
+Start with the [documentation index](docs/README.md), [academic configuration model](docs/academic-configuration.md), [student records model](docs/student-records.md), [enrollment integrity model](docs/enrollment-integrity.md), [grading and GWA model](docs/grading-and-gwa.md), [legacy architecture](docs/legacy/architecture.md), [risk register](docs/legacy/risk-register.md), and [development standards](docs/development/standards.md).
 
 ## Security posture
 

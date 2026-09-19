@@ -110,6 +110,10 @@ class EnrollmentStore {
                 .param("createdBy", enrollment.createdBy())
                 .param("version", enrollment.version())
                 .update();
+        jdbc.sql("INSERT INTO grade_record (id, enrollment_id) VALUES (:id, :enrollmentId)")
+                .param("id", UUID.randomUUID())
+                .param("enrollmentId", enrollment.id())
+                .update();
     }
 
     Optional<EnrollmentView> findEnrollment(UUID id) {

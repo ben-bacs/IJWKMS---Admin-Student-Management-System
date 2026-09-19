@@ -32,7 +32,7 @@ class FoundationMigrationIT {
                         .executeQuery(
                                 "SELECT metadata_value FROM app_metadata WHERE metadata_key = 'schema_version'")) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getString(1)).isEqualTo("enrollment");
+            assertThat(result.getString(1)).isEqualTo("grading");
         }
 
         try (Connection connection = dataSource.getConnection();
@@ -53,11 +53,12 @@ class FoundationMigrationIT {
                               'academic_year', 'academic_term',
                               'student', 'student_profile', 'student_program',
                               'course_offering', 'course_offering_schedule',
-                              'course_offering_instructor', 'enrollment', 'enrollment_event'
+                              'course_offering_instructor', 'enrollment', 'enrollment_event',
+                              'grade_policy', 'grade_record', 'grade_revision'
                           )
                         """)) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getInt(1)).isEqualTo(18);
+            assertThat(result.getInt(1)).isEqualTo(21);
         }
 
         try (Connection connection = dataSource.getConnection();
@@ -69,11 +70,12 @@ class FoundationMigrationIT {
                             'student.read', 'student.write',
                             'student.profile.read', 'student.profile.write',
                             'course.offering.read', 'course.offering.manage',
-                            'enrollment.read', 'enrollment.create', 'enrollment.drop'
+                            'enrollment.read', 'enrollment.create', 'enrollment.drop',
+                            'grade.read', 'grade.submit', 'grade.revise', 'grade.policy.manage'
                         )
                         """)) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getInt(1)).isEqualTo(13);
+            assertThat(result.getInt(1)).isEqualTo(17);
         }
     }
 }

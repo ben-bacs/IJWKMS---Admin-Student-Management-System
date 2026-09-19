@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-class OfferingService {
+class OfferingService implements OfferingDirectory {
 
     private final OfferingStore store;
     private final CourseDirectory courseDirectory;
@@ -190,6 +190,12 @@ class OfferingService {
     List<OfferingInstructorView> listInstructors(UUID offeringId) {
         requireOffering(offeringId);
         return store.listInstructors(offeringId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean isInstructor(UUID offeringId, UUID userId) {
+        return store.instructorExists(offeringId, userId);
     }
 
     private CourseOfferingView requireOffering(UUID id) {
