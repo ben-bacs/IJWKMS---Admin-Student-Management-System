@@ -38,7 +38,8 @@ public class AuthController {
     }
 
     @GetMapping("/csrf")
-    CsrfResponse csrf(CsrfToken csrfToken, HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+    CsrfResponse csrf(HttpServletRequest httpRequest, HttpServletResponse httpResponse) {
+        CsrfToken csrfToken = csrfTokenRepository.generateToken(httpRequest);
         csrfTokenRepository.saveToken(csrfToken, httpRequest, httpResponse);
         return new CsrfResponse(csrfToken.getHeaderName(), csrfToken.getParameterName(), csrfToken.getToken());
     }
