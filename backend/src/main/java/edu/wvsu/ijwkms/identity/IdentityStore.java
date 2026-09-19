@@ -3,6 +3,8 @@ package edu.wvsu.ijwkms.identity;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -61,7 +63,7 @@ class IdentityStore {
                 .param("displayName", user.displayName())
                 .param("passwordHash", user.passwordHash())
                 .param("status", user.status().name())
-                .param("credentialsChangedAt", user.credentialsChangedAt())
+                .param("credentialsChangedAt", atUtc(user.credentialsChangedAt()))
                 .param("version", user.version())
                 .update();
     }
@@ -76,7 +78,7 @@ class IdentityStore {
                         WHERE id = :userId
                         """)
                 .param("passwordHash", passwordHash)
-                .param("changedAt", changedAt)
+                .param("changedAt", atUtc(changedAt))
                 .param("userId", userId)
                 .update();
     }
@@ -88,7 +90,7 @@ class IdentityStore {
                         WHERE id = :userId
                         """)
                 .param("status", status.name())
-                .param("changedAt", changedAt)
+                .param("changedAt", atUtc(changedAt))
                 .param("userId", userId)
                 .update();
     }
@@ -167,8 +169,8 @@ class IdentityStore {
                 .param("tokenHash", tokenHash)
                 .param("clientIpHash", clientIpHash)
                 .param("userAgent", userAgent)
-                .param("createdAt", createdAt)
-                .param("expiresAt", expiresAt)
+                .param("createdAt", atUtc(createdAt))
+                .param("expiresAt", atUtc(expiresAt))
                 .update();
     }
 
@@ -186,7 +188,7 @@ class IdentityStore {
                           AND session.created_at >= app_user.credentials_changed_at
                         """)
                 .param("tokenHash", tokenHash)
-                .param("now", now)
+                .param("now", atUtc(now))
                 .query((result, rowNumber) -> new AuthenticatedSession(
                         result.getObject("session_id", UUID.class),
                         mapUser(result, rowNumber),
@@ -196,7 +198,7 @@ class IdentityStore {
 
     void touchSession(UUID sessionId, Instant now) {
         jdbc.sql("UPDATE user_session SET last_seen_at = :now WHERE id = :sessionId")
-                .param("now", now)
+                .param("now", atUtc(now))
                 .param("sessionId", sessionId)
                 .update();
     }
@@ -208,7 +210,7 @@ class IdentityStore {
                         WHERE token_hash = :tokenHash AND revoked_at IS NULL
                         RETURNING user_id
                         """)
-                .param("now", now)
+                .param("now", atUtc(now))
                 .param("tokenHash", tokenHash)
                 .query(UUID.class)
                 .optional();
@@ -219,7 +221,7 @@ class IdentityStore {
                         UPDATE user_session
                         SET revoked_at = :now
                         WHERE user_id = :userId AND revoked_at IS NULL
-                        """).param("now", now).param("userId", userId).update();
+                        """).param("now", atUtc(now)).param("userId", userId).update();
     }
 
     long countRecentFailures(String principalHash, String clientIpHash, Instant since) {
@@ -241,7 +243,7 @@ class IdentityStore {
                         """)
                 .param("principalHash", principalHash)
                 .param("clientIpHash", clientIpHash)
-                .param("since", since)
+                .param("since", atUtc(since))
                 .query(Long.class)
                 .single();
     }
@@ -256,7 +258,7 @@ class IdentityStore {
                 .param("principalHash", principalHash)
                 .param("clientIpHash", clientIpHash)
                 .param("succeeded", succeeded)
-                .param("attemptedAt", attemptedAt)
+                .param("attemptedAt", atUtc(attemptedAt))
                 .update();
     }
 
@@ -266,7 +268,10 @@ class IdentityStore {
                         UPDATE password_reset_token
                         SET consumed_at = :createdAt
                         WHERE user_id = :userId AND consumed_at IS NULL
-                        """).param("createdAt", createdAt).param("userId", userId).update();
+                        """)
+                .param("createdAt", atUtc(createdAt))
+                .param("userId", userId)
+                .update();
         jdbc.sql("""
                         INSERT INTO password_reset_token (
                             id, user_id, token_hash, requested_ip_hash, created_at, expires_at
@@ -278,8 +283,8 @@ class IdentityStore {
                 .param("userId", userId)
                 .param("tokenHash", tokenHash)
                 .param("requestedIpHash", requestedIpHash)
-                .param("createdAt", createdAt)
-                .param("expiresAt", expiresAt)
+                .param("createdAt", atUtc(createdAt))
+                .param("expiresAt", atUtc(expiresAt))
                 .update();
     }
 
@@ -292,7 +297,7 @@ class IdentityStore {
                           AND expires_at > :now
                         RETURNING user_id
                         """)
-                .param("now", now)
+                .param("now", atUtc(now))
                 .param("tokenHash", tokenHash)
                 .query(UUID.class)
                 .optional();
@@ -322,5 +327,9 @@ class IdentityStore {
                 AccountStatus.valueOf(result.getString("status")),
                 result.getTimestamp("credentials_changed_at").toInstant(),
                 result.getLong("version"));
+    }
+
+    private static OffsetDateTime atUtc(Instant instant) {
+        return instant.atOffset(ZoneOffset.UTC);
     }
 }

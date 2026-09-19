@@ -3,6 +3,7 @@ package edu.wvsu.ijwkms.audit;
 import edu.wvsu.ijwkms.shared.web.CorrelationIdFilter;
 import java.time.Clock;
 import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.Map;
 import java.util.UUID;
 import org.slf4j.MDC;
@@ -47,7 +48,7 @@ public class AuditService {
                 .param("outcome", outcome.name())
                 .param("correlationId", MDC.get(CorrelationIdFilter.MDC_KEY))
                 .param("detail", toJson(detail))
-                .param("occurredAt", Instant.now(clock))
+                .param("occurredAt", Instant.now(clock).atOffset(ZoneOffset.UTC))
                 .update();
     }
 
