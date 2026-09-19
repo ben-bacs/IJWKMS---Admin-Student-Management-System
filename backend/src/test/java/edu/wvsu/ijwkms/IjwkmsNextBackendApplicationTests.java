@@ -2,6 +2,8 @@ package edu.wvsu.ijwkms;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.simple.JdbcClient;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(
         properties = {
@@ -12,6 +14,9 @@ import org.springframework.boot.test.context.SpringBootTest;
                     + "org.springframework.boot.security.autoconfigure.UserDetailsServiceAutoConfiguration"
         })
 class IjwkmsNextBackendApplicationTests {
+
+    @MockitoBean
+    JdbcClient jdbcClient;
 
     @Test
     void contextLoads() {}

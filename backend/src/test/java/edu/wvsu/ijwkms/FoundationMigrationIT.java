@@ -32,7 +32,13 @@ class FoundationMigrationIT {
                         .executeQuery(
                                 "SELECT metadata_value FROM app_metadata WHERE metadata_key = 'schema_version'")) {
             assertThat(result.next()).isTrue();
-            assertThat(result.getString(1)).isEqualTo("foundation");
+            assertThat(result.getString(1)).isEqualTo("identity");
+        }
+
+        try (Connection connection = dataSource.getConnection();
+                ResultSet result = connection.createStatement().executeQuery("SELECT COUNT(*) FROM app_role")) {
+            assertThat(result.next()).isTrue();
+            assertThat(result.getInt(1)).isEqualTo(7);
         }
     }
 }

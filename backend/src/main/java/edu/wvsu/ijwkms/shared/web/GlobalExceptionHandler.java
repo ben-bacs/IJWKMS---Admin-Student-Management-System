@@ -17,6 +17,11 @@ public class GlobalExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    @ExceptionHandler(ApiException.class)
+    ResponseEntity<ApiErrorResponse> handleApiException(ApiException exception) {
+        return error(exception.status(), exception.code(), exception.getMessage(), List.of());
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ApiErrorResponse> handleInvalidArguments(MethodArgumentNotValidException exception) {
         List<ApiError.FieldViolation> violations = exception.getBindingResult().getFieldErrors().stream()

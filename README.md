@@ -4,7 +4,7 @@ IJWKMS Next is a ground-up modernization of the original Java console-based stud
 
 ## Current milestone
 
-Phase 1 establishes the delivery foundation:
+Phase 2 adds secure identity and access control to the delivery foundation:
 
 - Java 25 and Spring Boot 4 modular-monolith backend
 - PostgreSQL 17 with versioned Flyway migrations
@@ -12,6 +12,9 @@ Phase 1 establishes the delivery foundation:
 - OpenAPI, health probes, safe error envelopes, and correlation IDs
 - Non-root production containers and a local Compose stack
 - Backend, frontend, security, and container CI gates
+- BCrypt password hashing and environment-only first-administrator bootstrap
+- Opaque, hashed, server-revocable sessions in HttpOnly SameSite cookies
+- CSRF protection, login rate limiting, account lifecycle, roles, permissions, and audit events
 
 Functional academic modules are intentionally staged in the [development issues](https://github.com/ben-bacs/IJWKMS---Admin-Student-Management-System/issues). The legacy implementation remains under `src/` and the immutable baseline is tagged `legacy-v1.0`.
 
@@ -32,6 +35,8 @@ Then open:
 - OpenAPI UI: <http://localhost:8081/swagger-ui.html>
 
 The values in `.env.example` are local-development defaults only. Replace them for any shared or deployed environment; `.env` files are ignored by Git.
+
+For a new empty database, set `BOOTSTRAP_ADMIN_USERNAME` and a strong `BOOTSTRAP_ADMIN_PASSWORD` in `.env` before the first start. The bootstrap runs only while the user table is empty. After the administrator is created, remove both values from `.env` and restart the backend. No account is created when either value is absent.
 
 Stop the stack with `docker compose down`. Add `--volumes` only when you intentionally want to remove the local PostgreSQL data volume.
 
@@ -81,6 +86,8 @@ Start with the [documentation index](docs/README.md), [legacy architecture](docs
 
 ## Security posture
 
-The foundation denies application endpoints by default. It contains no default user account, browser-stored credentials, or production secret. Authentication and authorization are tracked in Phase 2; until then, only health, info, and API documentation endpoints are public.
+Application endpoints require an active server-side session and are denied by default. The browser receives only an opaque HttpOnly cookie; session and reset tokens are stored as SHA-256 hashes, passwords as BCrypt hashes, and authorization is enforced from persisted permissions on every request. CSRF, account lifecycle, session revocation, rate limiting, and sensitive identity audit events are part of the boundary. Health, info, authentication entry points, and API documentation are the only public routes.
+
+See the [identity security model](docs/security/identity.md) for bootstrap, cookie, permission, reset, and operational details.
 
 Do not use real student data during development. Report security concerns privately to the maintainers rather than opening a public issue containing sensitive details.

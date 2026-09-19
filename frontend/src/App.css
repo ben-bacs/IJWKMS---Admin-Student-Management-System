@@ -58,9 +58,21 @@
 }
 
 .site-nav a:hover,
-.site-nav a[aria-current='page'] {
+.site-nav a[aria-current='page'],
+.nav-button:hover {
   color: #163d31;
   background: #e7eee9;
+}
+
+.nav-button {
+  padding: 0.6rem 0.85rem;
+  border: 0;
+  border-radius: 999px;
+  color: #466158;
+  background: transparent;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .page {
@@ -216,6 +228,63 @@
   background: #fbefe5;
 }
 
+.auth-page {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(18rem, 30rem);
+  gap: clamp(2rem, 7vw, 7rem);
+  align-items: start;
+}
+
+.auth-form {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 0.5rem;
+  color: #294c40;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+.auth-form input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.65rem 0.8rem;
+  border: 1px solid #b7c7c0;
+  border-radius: 0.7rem;
+  color: #183b30;
+  background: #fff;
+}
+
+.auth-form input:focus {
+  border-color: #245c49;
+  box-shadow: 0 0 0 4px rgba(36, 92, 73, 0.1);
+}
+
+.auth-form .button {
+  border: 0;
+  cursor: pointer;
+}
+
+.auth-form .button:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+.form-error {
+  color: #7b2e20;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.form-help {
+  margin: 0;
+  color: #62756f;
+  font-size: 0.82rem;
+}
+
 .site-footer {
   display: flex;
   justify-content: space-between;
@@ -239,7 +308,8 @@
   }
 
   .hero,
-  .feature-grid {
+  .feature-grid,
+  .auth-page {
     grid-template-columns: 1fr;
   }
 
