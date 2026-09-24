@@ -15,6 +15,7 @@ This directory records the decisions and evidence used to replatform the origina
 - [Grading, revision history, and GWA model](grading-and-gwa.md)
 - [Explainable student-success model](student-success.md)
 - [Secure student portal](student-portal.md)
+- [Permission-gated administration portal](administration-portal.md)
 - [Architecture decision records](adr/README.md)
 
 The immutable historical baseline is the annotated Git tag `legacy-v1.0`, which points to commit `254831e37389a465bc32c88ded413143ff162916`.
